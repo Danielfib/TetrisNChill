@@ -5,14 +5,10 @@ namespace Tetris.Managers
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        void Start()
+        public override void Awake()
         {
-        
-        }
-
-        void Update()
-        {
-        
+            base.Awake();
+            DontDestroyOnLoad(this);
         }
     }
 }

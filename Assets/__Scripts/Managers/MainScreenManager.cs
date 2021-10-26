@@ -1,18 +1,14 @@
 using UnityEngine;
 using Tetris.Utils;
+using UnityEngine.SceneManagement;
 
 namespace Tetris.Managers
 {
     public class MainScreenManager : Singleton<MainScreenManager>
     {
-        void Start()
+        public void StartMatch() 
         {
-        
-        }
-
-        void Update()
-        {
-        
+            SceneManager.LoadScene(1);
         }
     }
 }

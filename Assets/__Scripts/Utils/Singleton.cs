@@ -17,11 +17,12 @@ namespace Tetris.Utils
             get { return instance != null; }
         }
 
-        protected virtual void Awake()
+        public virtual void Awake()
         {
             if (instance != null)
             {
                 Debug.LogError("Already exists one instance of " + typeof(T));
+                Destroy(gameObject);
             }
             else
             {
