@@ -4,6 +4,7 @@ Shader "Unlit/Grid"
     {
         [HDR]_GridColor("Grid Color", Color) = (1, 1, 1, 1)
         _SpaceColor("Space Color", Color) = (0, 0, 0, 0)
+        _Thickness("Thickness", Range(0.02, 0.8)) = 0.05
     }
     SubShader
     {
@@ -32,6 +33,7 @@ Shader "Unlit/Grid"
 
             float4 _GridColor;
             float4 _SpaceColor;
+            float _Thickness;
 
             Interpolator vert (MeshData v)
             {
@@ -44,10 +46,10 @@ Shader "Unlit/Grid"
 
             fixed4 frag(Interpolator i) : SV_Target
             {
-                //TODO: fix duplicated line on y = 0
                 float xDist = abs(i.worldPos.x) % 1;
                 float yDist = abs(i.worldPos.y) % 1;
-                if (xDist < 0.1 || yDist < 0.1) {
+                if (distance(xDist, 1) < _Thickness || distance(xDist, 0) < _Thickness 
+                    || distance(yDist, 1) < _Thickness || distance(yDist, 0) < _Thickness) {
                     return _GridColor;
                 }
                 else {
