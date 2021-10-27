@@ -5,14 +5,23 @@ namespace Tetris.Managers
 {
     public class MatchManager : Singleton<MatchManager>
     {
-        void Start()
+        [SerializeField] PieceFactory factory;
+        [SerializeField] PlayerController player;
+
+        private void Start()
         {
-        
+            StartMatch();
         }
 
-        void Update()
+        public void SpawnNewPiece()
         {
-        
+            GameObject newPiece = factory.Spawn();
+            player.SetNewPiece(newPiece.GetComponent<Piece>());
+        }
+
+        public void StartMatch()
+        {
+            SpawnNewPiece();
         }
     }
 }

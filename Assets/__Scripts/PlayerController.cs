@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Piece fallingPiece;
+
+    public void OnMoveLeft()
     {
-        
+        fallingPiece.MoveInDirection(Vector3.left);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnMoveRight()
     {
-        
+        fallingPiece.MoveInDirection(Vector3.right);
+    }
+
+    public void OnRotate()
+    {
+        fallingPiece.Rotate();
+    }
+
+    public void OnAccelerate(InputValue value)
+    {
+        fallingPiece.SetAcceleration(value.isPressed);
+    }
+
+    public void SetNewPiece(Piece p)
+    {
+        fallingPiece = p;
     }
 }

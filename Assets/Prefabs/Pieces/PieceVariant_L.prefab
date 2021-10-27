@@ -94,7 +94,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3131129210345781784
 GameObject:
@@ -190,7 +190,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4064637370650303454
 GameObject:
@@ -286,7 +286,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6133628405050642712
 GameObject:
@@ -382,7 +382,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &692305891735056669
 PrefabInstance:
@@ -391,6 +391,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 458607881278671668, guid: d2929f9bd3cffcd46bae89fa3551f163, type: 3}
+      propertyPath: fallTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1008541907837386713, guid: d2929f9bd3cffcd46bae89fa3551f163, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -434,6 +438,14 @@ PrefabInstance:
     - target: {fileID: 1008541907837386713, guid: d2929f9bd3cffcd46bae89fa3551f163, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1008541907837386714, guid: d2929f9bd3cffcd46bae89fa3551f163, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1008541907837386714, guid: d2929f9bd3cffcd46bae89fa3551f163, type: 3}
+      propertyPath: m_Constraints
+      value: 126
       objectReference: {fileID: 0}
     - target: {fileID: 1008541907837386715, guid: d2929f9bd3cffcd46bae89fa3551f163, type: 3}
       propertyPath: m_Name

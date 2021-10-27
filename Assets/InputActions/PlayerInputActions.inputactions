@@ -22,6 +22,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Rotate",
+                    "type": "Button",
+                    "id": "e4321d25-e0fc-40a9-b308-c91d969e4aa6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Skip",
                     "type": "Button",
                     "id": "0d9adaf7-040a-401a-b676-0f73fed00d7e",
@@ -31,7 +39,7 @@
                 },
                 {
                     "name": "Accelerate",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "1437fd35-5511-46b8-b352-e45232f64b1c",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -99,6 +107,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1446e23-4610-405d-a4d6-0326dd4a8ffd",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

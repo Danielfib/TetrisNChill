@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class PieceFactory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject[] pieces;
 
-    // Update is called once per frame
-    void Update()
+    public GameObject Spawn()
     {
-        
+        int randomIndex = Random.Range(0, pieces.Length);
+        GameObject newPiece = Instantiate(pieces[randomIndex]);
+        newPiece.transform.position = transform.position;
+        return newPiece;
     }
 }
