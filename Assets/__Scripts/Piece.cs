@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Tetris.Managers;
 using UnityEngine;
+using System.Linq;
+
 
 public class Piece : MonoBehaviour
 {
@@ -82,8 +84,8 @@ public class Piece : MonoBehaviour
         }
 
         closerDistToCollide -= 0.75f;
-
         transform.position += Vector3.down * closerDistToCollide;
+
         FinishFalling();
     }
 
@@ -123,12 +125,48 @@ public class Piece : MonoBehaviour
     private void FinishFalling()
     {
         ChangeSelfAndChildrenLayer(LayerMask.NameToLayer("StationaryPiece"));
-        StartCoroutine(WaitForPhysicsCoroutine(() =>
+        MatchManager.Instance.SpawnNewPiece();
+
+        StartCoroutine(CheckLineBreak());
+    }
+
+    IEnumerator CheckLineBreak()
+    {
+        yield return updateWait;
+        List<float> differentHeights = new List<float>();
+        Transform[] children = GetChildren(transform);
+        foreach (var c in children)
         {
-            MatchManager.Instance.SpawnNewPiece();
-            ReleaseChildren(blocksParent);
-            Destroy(gameObject);
-        }));
+            c.parent = blocksParent;
+            float y = (float)Math.Round(c.position.y, 2);
+            c.position = new Vector3(c.position.x, y, c.position.z);
+        }
+
+        foreach (var c in children)
+        {
+            if (!differentHeights.Contains(c.position.y)) differentHeights.Add(c.position.y);
+        }
+
+
+        List<float> linesDestroyed = new List<float>();
+        foreach (var y in differentHeights)
+        {
+            bool didDestroyLine = LineBreakChecker.Instance.CheckLine(y);
+            if (didDestroyLine) linesDestroyed.Add(y);
+        }
+
+        yield return updateWait;
+        if (linesDestroyed.Count > 0)
+        {
+            linesDestroyed.Sort();
+            linesDestroyed.Reverse();
+            foreach (var l in linesDestroyed)
+            {
+                LineBreakChecker.Instance.LowerBlocksAbove(l);
+            }
+        }
+
+        Destroy(gameObject);
     }
 
     private void ChangeSelfAndChildrenLayer(int layer)
@@ -141,18 +179,14 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private void ReleaseChildren(Transform parent)
-    {
-        for (var i = transform.childCount - 1; i >= 0; i--)
-        {
-            var child = transform.GetChild(i);
-            child.parent = parent;
-        }
-    }
-
     private IEnumerator WaitForPhysicsCoroutine(Action doThat)
     {
         yield return updateWait;
         doThat.Invoke();
+    }
+
+    private Transform[] GetChildren(Transform p)
+    {
+        return GetComponentsInChildren<Transform>().Where(t => t != p).ToArray();
     }
 }
