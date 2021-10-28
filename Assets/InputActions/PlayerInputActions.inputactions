@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Skip",
+                    "name": "SkipFall",
                     "type": "Button",
                     "id": "0d9adaf7-040a-401a-b676-0f73fed00d7e",
                     "expectedControlType": "Button",
@@ -84,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skip",
+                    "action": "SkipFall",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -14,11 +14,14 @@ public class Piece : MonoBehaviour
 
     WaitForFixedUpdate updateWait;
 
+    public LayerMask fallingPieceCollisionLayerMask;
+
     private void Start()
     {
         timeCounter = Time.time;
         updateWait = new WaitForFixedUpdate();
         currentFallTime = GameManager.Instance.GetStandardFallTime();
+        ChangeSelfAndChildrenLayer(LayerMask.NameToLayer("FallingPiece"));
     }
 
     void Update()
@@ -39,6 +42,39 @@ public class Piece : MonoBehaviour
     {
         transform.position += Vector3.down;
         StartCoroutine(FallCoroutine());
+    }
+
+    public void SkipFall()
+    {
+        //TODO: refatorar para ser um for só
+
+        float[] raycastHitsY = new float[transform.childCount];
+        for(var i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+
+            RaycastHit hit;
+            if(Physics.Raycast(child.position, Vector3.down, out hit, Mathf.Infinity, fallingPieceCollisionLayerMask))
+            {
+                raycastHitsY[i] = hit.point.y;
+            }
+        }
+
+        //vê qual é a menor distância em que um dos filhos irá colidir com algo
+        float closerDistToCollide = Mathf.Infinity;
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            float distToCollide = transform.GetChild(i).position.y - raycastHitsY[i];
+            if (distToCollide < closerDistToCollide)
+            {
+                closerDistToCollide = distToCollide;
+            }
+        }
+
+        closerDistToCollide -= 0.75f;
+
+        transform.position += Vector3.down * closerDistToCollide;
+        FinishFalling();
     }
 
     public void Rotate()
@@ -77,8 +113,7 @@ public class Piece : MonoBehaviour
         if (!IsPositionValid())
         {
             transform.position -= Vector3.down;
-            enabled = false;
-            MatchManager.Instance.SpawnNewPiece();
+            FinishFalling();
         }
     }
 
@@ -95,5 +130,22 @@ public class Piece : MonoBehaviour
     private bool IsPositionValid()
     {
         return currentCollisions == 0;
+    }
+
+    private void FinishFalling()
+    {
+        enabled = false;
+        ChangeSelfAndChildrenLayer(LayerMask.NameToLayer("StationaryPiece"));
+        MatchManager.Instance.SpawnNewPiece();
+    }
+
+    private void ChangeSelfAndChildrenLayer(int layer)
+    {
+        gameObject.layer = layer;
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            child.gameObject.layer = layer;
+        }
     }
 }

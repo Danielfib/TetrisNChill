@@ -26,6 +26,10 @@ public class PlayerController : MonoBehaviour
     {
         fallingPiece.SetAcceleration(value.isPressed);
     }
+    public void OnSkipFall()
+    {
+        fallingPiece.SkipFall();
+    }
 
     public void SetNewPiece(Piece p)
     {
