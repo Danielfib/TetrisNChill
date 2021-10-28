@@ -13,6 +13,7 @@ public class Piece : MonoBehaviour
 
     int currentCollisions;
     WaitForFixedUpdate updateWait;
+    Action finishedFalling;
 
     private void Start()
     {
@@ -115,8 +116,14 @@ public class Piece : MonoBehaviour
     private void FinishFalling()
     {
         gameObject.SetSelfAndChildrenLayer(LayerMask.NameToLayer("StationaryPiece"));
-        MatchManager.Instance.SpawnNewPiece();
+        finishedFalling.Invoke();
+        enabled = false;
         LineBreakChecker.Instance.CheckFallenPiece(transform);
+    }
+
+    public void AddFinishedFallingListener(Action callback)
+    {
+        finishedFalling += callback;
     }
 
     private IEnumerator WaitForPhysicsCoroutine(Action doThat)

@@ -322,9 +322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8237977b66b5c4b90861755b35c29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factory: {fileID: 1706200357}
-  player: {fileID: 650991628}
-  BlocksParent: {fileID: 819361314}
 --- !u!4 &484294066
 Transform:
   m_ObjectHideFlags: 0
@@ -442,6 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb42cbea4d331c940a8dfa9949d15b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  factory: {fileID: 1706200357}
 --- !u!4 &650991629
 Transform:
   m_ObjectHideFlags: 0

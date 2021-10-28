@@ -21,14 +21,14 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
     {
         yield return new WaitForFixedUpdate();
 
-        ReleaseBlocks(piece);
         var heightsToCheck = GetChildrenDifferentHeights(piece);
+        ReleaseBlocks(piece);
         var linesDestroyed = DestroyFullLines(heightsToCheck);
 
         yield return new WaitForFixedUpdate();
 
         LowerBlocksAboveDestroyedLines(linesDestroyed);
-        Destroy(gameObject);
+        Destroy(piece.gameObject);
     }
 
     private void ReleaseBlocks(Transform piece)
@@ -76,7 +76,8 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
 
     public bool CheckLine(float lineY)
     {
-        var childrenInLine = transform.GetComponentsInChildren<Transform>().Where(t => Distance(t.position.y, lineY) < TOLERANCE);
+        var childrenInLine = transform.GetChildren().Where(t => Distance(t.position.y, lineY) < TOLERANCE);
+        //var oi = childrenInLine.ToList();
         //print("children in: " + lineY + "-----" + childrenInLine.Count());
         if(childrenInLine.Count() >= 10)
         {

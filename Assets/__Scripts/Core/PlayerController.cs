@@ -5,8 +5,28 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] PieceFactory factory;
+
     Piece fallingPiece;
 
+    private void Start()
+    {
+        SpawnNewPiece();
+    }
+
+    public void SpawnNewPiece()
+    {
+        Piece newPiece = factory.Spawn().GetComponent<Piece>();
+        newPiece.AddFinishedFallingListener(PieceFinishedFalling);
+        fallingPiece = newPiece;
+    }
+
+    public void PieceFinishedFalling()
+    {
+        SpawnNewPiece();
+    }
+
+    #region InputAction Messages
     public void OnMoveLeft()
     {
         fallingPiece.MoveInDirection(Vector3.left);
@@ -30,9 +50,5 @@ public class PlayerController : MonoBehaviour
     {
         fallingPiece.SkipFall();
     }
-
-    public void SetNewPiece(Piece p)
-    {
-        fallingPiece = p;
-    }
+    #endregion
 }
