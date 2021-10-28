@@ -17,7 +17,6 @@ namespace Tetris.Managers
         public void SpawnNewPiece()
         {
             Piece newPiece = factory.Spawn().GetComponent<Piece>();
-            newPiece.blocksParent = BlocksParent;
             player.SetNewPiece(newPiece);
         }
 

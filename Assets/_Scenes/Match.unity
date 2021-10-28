@@ -534,6 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 958c08b4ccc197f4887068d5cf6c6491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocksParent: {fileID: 819361314}
 --- !u!1 &969681721
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,13 +979,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900766278}
-  m_LocalRotation: {x: 0.12988074, y: -0.09844352, z: 0.012960317, w: 0.98654544}
-  m_LocalPosition: {x: 2.36, y: 14, z: -14}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: -1.5, y: 14, z: -14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 15, y: -11.397, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!1 &1933857321
 GameObject:
   m_ObjectHideFlags: 0
