@@ -16,6 +16,9 @@ public class Piece : MonoBehaviour
 
     public LayerMask fallingPieceCollisionLayerMask;
 
+    [HideInInspector]
+    public Transform blocksParent;
+
     private void Start()
     {
         timeCounter = Time.time;
@@ -41,7 +44,14 @@ public class Piece : MonoBehaviour
     void Fall()
     {
         transform.position += Vector3.down;
-        StartCoroutine(FallCoroutine());
+        StartCoroutine(WaitForPhysicsCoroutine(() =>
+        {
+            if (!IsPositionValid())
+            {
+                transform.position -= Vector3.down;
+                FinishFalling();
+            }
+        }));
     }
 
     public void SkipFall()
@@ -80,41 +90,19 @@ public class Piece : MonoBehaviour
     public void Rotate()
     {
         transform.eulerAngles += Vector3.forward * 90;
-        StartCoroutine(RotateBackCoroutine());
+        StartCoroutine(WaitForPhysicsCoroutine(() =>
+        {
+            if (!IsPositionValid()) transform.eulerAngles -= Vector3.forward * 90;
+        }));
     }
 
     public void MoveInDirection(Vector3 dir)
     {
         transform.position += dir;
-        StartCoroutine(MoveBackCoroutine(dir));
-    }
-
-    IEnumerator RotateBackCoroutine()
-    {
-        yield return updateWait;
-        if (!IsPositionValid())
+        StartCoroutine(WaitForPhysicsCoroutine(() =>
         {
-            transform.eulerAngles -= Vector3.forward * 90;
-        }
-    }
-
-    IEnumerator MoveBackCoroutine(Vector3 dir)
-    {
-        yield return updateWait;
-        if (!IsPositionValid())
-        {
-            transform.position -= dir;
-        }
-    }
-
-    IEnumerator FallCoroutine()
-    {
-        yield return updateWait;
-        if (!IsPositionValid())
-        {
-            transform.position -= Vector3.down;
-            FinishFalling();
-        }
+            if (!IsPositionValid()) transform.position -= dir;
+        }));
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -134,9 +122,13 @@ public class Piece : MonoBehaviour
 
     private void FinishFalling()
     {
-        enabled = false;
         ChangeSelfAndChildrenLayer(LayerMask.NameToLayer("StationaryPiece"));
-        MatchManager.Instance.SpawnNewPiece();
+        StartCoroutine(WaitForPhysicsCoroutine(() =>
+        {
+            MatchManager.Instance.SpawnNewPiece();
+            ReleaseChildren(blocksParent);
+            Destroy(gameObject);
+        }));
     }
 
     private void ChangeSelfAndChildrenLayer(int layer)
@@ -147,5 +139,20 @@ public class Piece : MonoBehaviour
             var child = transform.GetChild(i);
             child.gameObject.layer = layer;
         }
+    }
+
+    private void ReleaseChildren(Transform parent)
+    {
+        for (var i = transform.childCount - 1; i >= 0; i--)
+        {
+            var child = transform.GetChild(i);
+            child.parent = parent;
+        }
+    }
+
+    private IEnumerator WaitForPhysicsCoroutine(Action doThat)
+    {
+        yield return updateWait;
+        doThat.Invoke();
     }
 }

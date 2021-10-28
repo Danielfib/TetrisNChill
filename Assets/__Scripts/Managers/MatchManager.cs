@@ -7,6 +7,7 @@ namespace Tetris.Managers
     {
         [SerializeField] PieceFactory factory;
         [SerializeField] PlayerController player;
+        [SerializeField] Transform BlocksParent;
 
         private void Start()
         {
@@ -15,8 +16,9 @@ namespace Tetris.Managers
 
         public void SpawnNewPiece()
         {
-            GameObject newPiece = factory.Spawn();
-            player.SetNewPiece(newPiece.GetComponent<Piece>());
+            Piece newPiece = factory.Spawn().GetComponent<Piece>();
+            newPiece.blocksParent = BlocksParent;
+            player.SetNewPiece(newPiece);
         }
 
         public void StartMatch()
