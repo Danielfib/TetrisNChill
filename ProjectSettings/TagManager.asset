@@ -14,7 +14,7 @@ TagManager:
   - FallingPiece
   - StationaryPiece
   - LineChecker
-  - 
+  - LoseChecker
   - 
   - 
   - 
