@@ -56,10 +56,13 @@ Shader "Unlit/Grid"
                 float m = max(mx, my);
                 float mLerped = lerp(-8, 1, m);
 
-                float4 c = float4(_GridColor.xyz * mLerped, _GridColor.w) + tex2D(_MainTex, i.uv);
-                //float4 c = lerp(tex2D(_MainTex, i.uv), _GridColor, m);
-
-                return c;
+                if (mLerped < 0) {
+                    return _SpaceColor;
+                }
+                else {
+                    float4 c = float4(_GridColor.xyz * mLerped, _GridColor.w) + tex2D(_MainTex, i.uv);
+                    return c;
+                }
             }
             ENDCG
         }
