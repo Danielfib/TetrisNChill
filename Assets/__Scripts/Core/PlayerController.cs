@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     Piece fallingPiece;
 
-    private void Start()
+    public void StartGame()
     {
         SpawnNewPiece();
     }

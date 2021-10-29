@@ -5,6 +5,7 @@ using System.Linq;
 using Tetris.Utils;
 using Tetris.Extensions;
 using System;
+using Tetris.Managers;
 
 public class LineBreakChecker : Singleton<LineBreakChecker>
 {
@@ -77,12 +78,12 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
     public bool CheckLine(float lineY)
     {
         var childrenInLine = transform.GetChildren().Where(t => Distance(t.position.y, lineY) < TOLERANCE);
-        //var oi = childrenInLine.ToList();
         //print("children in: " + lineY + "-----" + childrenInLine.Count());
         if(childrenInLine.Count() >= 10)
         {
             foreach (var child in childrenInLine) Destroy(child.gameObject);
 
+            MatchHUDManager.Instance.Score();
             return true;
         }
         return false;
