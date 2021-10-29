@@ -63,3 +63,4 @@ MonoBehaviour:
   fallingPieceCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 129
+  previewMat: {fileID: 2100000, guid: a546834cb13a15f418e6d9491a8c3df3, type: 2}

@@ -3,6 +3,7 @@ using System.Collections;
 using Tetris.Managers;
 using Tetris.Extensions;
 using UnityEngine;
+using System.Linq;
 
 public class Piece : MonoBehaviour
 {
@@ -15,12 +16,37 @@ public class Piece : MonoBehaviour
     WaitForFixedUpdate updateWait;
     Action finishedFalling;
 
+    GameObject preview;
+    [SerializeField] Material previewMat;
+
     private void Start()
     {
         timeCounter = Time.time;
         updateWait = new WaitForFixedUpdate();
         currentFallTime = GameManager.Instance.GetStandardFallTime();
         gameObject.SetSelfAndChildrenLayer(LayerMask.NameToLayer("FallingPiece"));
+        InstantiatePreview();
+    }
+
+    void InstantiatePreview()
+    {
+        preview = Instantiate(gameObject);
+        Destroy(preview.GetComponent<Piece>());        
+        foreach(var col in preview.GetComponentsInChildren<Collider>())
+        {
+            Destroy(col);
+        }
+        foreach(var ren in preview.GetComponentsInChildren<Renderer>())
+        {
+            ren.material = previewMat;
+        }
+    }
+
+    void PlacePreview()
+    {
+        float closerDistToCollide = CalculateCollisionDistance();
+        preview.transform.position = transform.position + Vector3.down * closerDistToCollide;
+        preview.transform.eulerAngles = transform.eulerAngles;
     }
 
     void Update()
@@ -30,6 +56,8 @@ public class Piece : MonoBehaviour
             Fall();
             timeCounter = Time.time;
         }
+
+        PlacePreview();
     }
 
     internal void SetAcceleration(bool isAccelerating)
@@ -52,13 +80,21 @@ public class Piece : MonoBehaviour
 
     public void SkipFall()
     {
+        float closerDistToCollide = CalculateCollisionDistance();
+        transform.position += Vector3.down * closerDistToCollide;
+
+        FinishFalling();
+    }
+
+    private float CalculateCollisionDistance()
+    {
         float[] raycastHitsY = new float[transform.childCount];
-        for(var i = 0; i < transform.childCount; i++)
+        for (var i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
 
             RaycastHit hit;
-            if(Physics.Raycast(child.position, Vector3.down, out hit, Mathf.Infinity, fallingPieceCollisionLayerMask))
+            if (Physics.Raycast(child.position, Vector3.down, out hit, Mathf.Infinity, fallingPieceCollisionLayerMask))
             {
                 raycastHitsY[i] = hit.point.y;
             }
@@ -75,9 +111,7 @@ public class Piece : MonoBehaviour
         }
 
         closerDistToCollide -= 0.75f;
-        transform.position += Vector3.down * closerDistToCollide;
-
-        FinishFalling();
+        return closerDistToCollide;
     }
 
     public void Rotate()
@@ -130,5 +164,10 @@ public class Piece : MonoBehaviour
     {
         yield return updateWait;
         doThat.Invoke();
+    }
+
+    public void OnDestroy()
+    {
+        Destroy(preview);
     }
 }
