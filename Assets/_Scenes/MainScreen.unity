@@ -7636,6 +7636,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ee46eaaeedc2c43830c12f074d6ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vanishToLeft:
+  - {fileID: 1625674116}
+  - {fileID: 3900982450924045774}
+  - {fileID: 2086698705}
+  vanishToRight:
+  - {fileID: 251609205}
+  vanishDuration: 1
 --- !u!4 &921189300
 Transform:
   m_ObjectHideFlags: 0
@@ -20868,9 +20875,9 @@ MonoBehaviour:
   clickEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 424514440}
-        m_TargetAssemblyTypeName: Tetris.Managers.GameManager, Managers
-        m_MethodName: Quit
+      - m_Target: {fileID: 921189299}
+        m_TargetAssemblyTypeName: Tetris.Managers.MainScreenManager, Managers
+        m_MethodName: StartMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

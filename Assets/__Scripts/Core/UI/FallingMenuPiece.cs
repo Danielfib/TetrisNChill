@@ -19,4 +19,9 @@ public class FallingMenuPiece : MonoBehaviour
             Fall();
         });
     }
+
+    private void OnDestroy()
+    {
+        DOTween.KillAll();
+    }
 }

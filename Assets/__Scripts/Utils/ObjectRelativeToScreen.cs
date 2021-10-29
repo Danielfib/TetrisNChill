@@ -80,7 +80,7 @@ namespace Tetris.Utils
 #if UNITY_EDITOR
         private void Update()
         {
-            Position();
+            if(!Application.isPlaying) Position();
         }
 #endif
     }

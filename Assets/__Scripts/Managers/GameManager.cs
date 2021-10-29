@@ -15,11 +15,6 @@ namespace Tetris.Managers
             DontDestroyOnLoad(this);
         }
 
-        public void Play()
-        {
-            SceneManager.LoadScene(1);
-        }
-
         public void Quit()
         {
 #if UNITY_EDITOR
