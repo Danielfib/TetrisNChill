@@ -2,12 +2,14 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using Tetris.Managers;
+using UnityEngine.Events;
 
 namespace Tetris.UI
 {
     public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
         [SerializeField] float animationStrength, animationDuration;
+        [SerializeField] UnityEvent clickEvent;
 
         Vector3 initScale;
 
@@ -28,7 +30,7 @@ namespace Tetris.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            GameManager.Instance.Play();
+            clickEvent.Invoke();
         }
     }
 }
