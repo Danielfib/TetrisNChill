@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     Piece fallingPiece;
 
-    public void StartGame()
+    public void StartPlaying()
     {
         SpawnNewPiece();
     }
@@ -26,29 +26,38 @@ public class PlayerController : MonoBehaviour
         SpawnNewPiece();
     }
 
+    public void StopPlaying()
+    {
+        if(fallingPiece != null)
+        {
+            Destroy(fallingPiece.gameObject);
+            fallingPiece = null;
+        }
+    }
+
     #region InputAction Messages
     public void OnMoveLeft()
     {
-        fallingPiece.MoveInDirection(Vector3.left);
+        fallingPiece?.MoveInDirection(Vector3.left);
     }
 
     public void OnMoveRight()
     {
-        fallingPiece.MoveInDirection(Vector3.right);
+        fallingPiece?.MoveInDirection(Vector3.right);
     }
 
     public void OnRotate()
     {
-        fallingPiece.Rotate();
+        fallingPiece?.Rotate();
     }
 
     public void OnAccelerate(InputValue value)
     {
-        fallingPiece.SetAcceleration(value.isPressed);
+        fallingPiece?.SetAcceleration(value.isPressed);
     }
     public void OnSkipFall()
     {
-        fallingPiece.SkipFall();
+        fallingPiece?.SkipFall();
     }
     #endregion
 }

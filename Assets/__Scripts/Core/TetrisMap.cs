@@ -10,7 +10,7 @@ namespace Tetris.Core
         {
             transform.DOMoveX(0, 1).SetEase(Ease.OutBack).OnComplete(() => {
                 MatchHUDManager.Instance.Appear();
-                FindObjectOfType<PlayerController>().StartGame(); 
+                FindObjectOfType<PlayerController>().StartPlaying(); 
             });
         }
     }

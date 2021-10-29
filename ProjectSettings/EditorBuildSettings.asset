@@ -11,7 +11,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Match.unity
     guid: 8a5395f021f39d14eabb518dcab31f53
-  - enabled: 1
-    path: Assets/_Scenes/EndScreen.unity
-    guid: 4c873c00dc261a140996cea9d9af7ed3
   m_configObjects: {}

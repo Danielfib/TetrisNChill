@@ -29,7 +29,7 @@ namespace Tetris.Managers
         private void GoToMatchScene()
         {
             DOTween.CompleteAll();
-            SceneManager.LoadScene(1);
+            GameManager.Instance.StartMatch();
         }
     }
 }

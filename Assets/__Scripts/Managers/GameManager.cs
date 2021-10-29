@@ -27,6 +27,16 @@ namespace Tetris.Managers
 
         public float GetStandardFallTime() { return settings.StandardFallTime; }
         public float GetAcceleratedFallTime() { return settings.AcceleratedFallTime; }
+
+        public void StartMatch()
+        {
+            SceneManager.LoadScene(1);
+        }
+
+        public void ReturnToMainMenu()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     [Serializable]
