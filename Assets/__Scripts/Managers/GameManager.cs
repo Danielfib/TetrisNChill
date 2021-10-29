@@ -1,6 +1,7 @@
 using UnityEngine;
 using Tetris.Utils;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace Tetris.Managers
 {
@@ -12,6 +13,11 @@ namespace Tetris.Managers
         {
             base.Awake();
             DontDestroyOnLoad(this);
+        }
+
+        public void Play()
+        {
+            SceneManager.LoadScene(1);
         }
 
         public float GetStandardFallTime() { return settings.StandardFallTime; }

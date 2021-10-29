@@ -21,7 +21,7 @@ namespace Tetris.Utils
         {
             if (instance != null)
             {
-                Debug.LogError("Already exists one instance of " + typeof(T));
+                Debug.LogWarning("Already exists one instance of " + typeof(T));
                 Destroy(gameObject);
             }
             else

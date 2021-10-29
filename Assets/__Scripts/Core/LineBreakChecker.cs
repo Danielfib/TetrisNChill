@@ -77,7 +77,7 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
 
     public bool CheckLine(float lineY)
     {
-        var childrenInLine = transform.GetChildren().Where(t => Distance(t.position.y, lineY) < TOLERANCE);
+        var childrenInLine = transform.GetChildren().Where(t => t.position.y.Difference(lineY) < TOLERANCE);
         //print("children in: " + lineY + "-----" + childrenInLine.Count());
         if(childrenInLine.Count() >= 10)
         {
@@ -93,10 +93,5 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
     {
         var childrenAboveLine = transform.GetComponentsInChildren<Transform>().Where(t => t.position.y > y + TOLERANCE);
         foreach (var child in childrenAboveLine) child.position -= Vector3.up;
-    }
-
-    float Distance(float a, float b)
-    {
-        return Mathf.Abs(Mathf.Abs(a) - Mathf.Abs(b));
     }
 }
