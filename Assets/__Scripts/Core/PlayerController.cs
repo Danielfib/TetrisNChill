@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
 
     Piece fallingPiece;
 
+    Vector3 currentMoveDir;
+    float lastMoveTime, moveInterval = 0.16f;
+    bool isMoving;
+
     public void StartPlaying()
     {
         SpawnNewPiece();
@@ -35,15 +39,53 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    #region InputAction Messages
-    public void OnMoveLeft()
+    private void Update()
     {
-        fallingPiece?.MoveInDirection(Vector3.left);
+        if (isMoving)
+        {
+            if(Time.time > lastMoveTime + moveInterval)
+            {
+                fallingPiece?.MoveInDirection(currentMoveDir);
+                lastMoveTime = Time.time;
+            }
+        }
     }
 
-    public void OnMoveRight()
+    void StartMoving(Vector3 dir)
     {
-        fallingPiece?.MoveInDirection(Vector3.right);
+        fallingPiece?.MoveInDirection(dir);
+        lastMoveTime = Time.time;
+        isMoving = true;
+        currentMoveDir = dir;
+    }
+
+    void StopMoving()
+    {
+        isMoving = false;
+    }
+
+    #region InputAction Messages
+    public void OnMoveLeft(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            StartMoving(Vector3.left);
+        } else
+        {
+            StopMoving();
+        }
+    }
+
+    public void OnMoveRight(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            StartMoving(Vector3.right);
+        }
+        else
+        {
+            StopMoving();
+        }
     }
 
     public void OnRotate()
@@ -55,6 +97,7 @@ public class PlayerController : MonoBehaviour
     {
         fallingPiece?.SetAcceleration(value.isPressed);
     }
+
     public void OnSkipFall()
     {
         fallingPiece?.SkipFall();

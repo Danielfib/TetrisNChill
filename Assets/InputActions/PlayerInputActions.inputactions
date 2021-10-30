@@ -7,17 +7,17 @@
             "actions": [
                 {
                     "name": "MoveLeft",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "a2177a9d-00d6-4183-a1c0-40794de2070b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "MoveRight",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "66a17bde-d381-410c-bf32-d05d13c8e963",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 },
