@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 //Simple Helvetica. Copyright © 2012. Studio Pepwuper, Inc. http://www.pepwuper.com/
 //email: info@pepwuper.com
 //version 1.0
@@ -147,3 +148,4 @@ public class SimpleHelveticaCustomEditor : Editor {
 	
 	
 }
+#endif

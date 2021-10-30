@@ -19,7 +19,6 @@ namespace Tetris.Managers
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-            
 #else
             Application.Quit();
 #endif
@@ -30,11 +29,13 @@ namespace Tetris.Managers
 
         public void StartMatch()
         {
+            AudioManager.Instance.PlayTransitionWhoosh();
             SceneManager.LoadScene(1);
         }
 
         public void ReturnToMainMenu()
         {
+            //AudioManager.Instance.PlayTransitionWhoosh();
             SceneManager.LoadScene(0);
         }
     }

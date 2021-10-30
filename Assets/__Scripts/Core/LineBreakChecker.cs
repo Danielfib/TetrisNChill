@@ -62,6 +62,9 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
             bool didDestroyLine = CheckLine(y);
             if (didDestroyLine) linesDestroyed.Add(y);
         }
+
+        AudioManager.Instance.PieceFell(linesDestroyed.Count);
+
         return linesDestroyed;
     }
 

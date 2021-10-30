@@ -12,15 +12,19 @@ namespace Tetris.Managers
         [SerializeField] SimpleHelvetica scoreNumber;
         [SerializeField] float vanishDuration;
 
+        Vector3 scoreNumberInitScale;
+
         public void ShowEndScreen()
         {
             map.DOMoveX(map.position.x + 10, 2);
             endingScreen.DOMoveX(0, 2);
+            AudioManager.Instance.PlayTransitionWhoosh();
         }
 
         public void Start()
         {
             HUD.localScale = Vector3.zero;
+            scoreNumberInitScale = scoreNumber.transform.localScale;
         }
 
         public void Appear()
@@ -49,6 +53,9 @@ namespace Tetris.Managers
             currentScore++;
             scoreNumber.Text = currentScore.ToString();
             scoreNumber.GenerateText();
+
+            scoreNumber.transform.DOScale(scoreNumberInitScale * 2, 0.5f)
+                .OnComplete(() => scoreNumber.transform.DOScale(scoreNumberInitScale, 0.5f));
         }
     }
 }

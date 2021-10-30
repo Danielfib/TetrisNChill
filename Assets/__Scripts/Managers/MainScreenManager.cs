@@ -31,5 +31,10 @@ namespace Tetris.Managers
             DOTween.CompleteAll();
             GameManager.Instance.StartMatch();
         }
+
+        public void Quit()
+        {
+            GameManager.Instance.Quit();
+        }
     }
 }
