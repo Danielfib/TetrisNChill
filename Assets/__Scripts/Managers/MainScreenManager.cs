@@ -1,6 +1,7 @@
 using UnityEngine;
 using Tetris.Utils;
 using DG.Tweening;
+using Tetris.Extensions;
 
 namespace Tetris.Managers
 {
@@ -19,6 +20,7 @@ namespace Tetris.Managers
             {
                 highScoreText.Text = storedHighscore.ToString();
                 highScoreText.GenerateText();
+                foreach (var c in highScoreText.transform.GetChildren()) c.localScale = Vector3.one;
             } else
             {
                 highScoreHolder.gameObject.SetActive(false);
