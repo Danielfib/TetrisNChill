@@ -16,6 +16,7 @@ namespace Tetris.Managers
 
         public void ShowEndScreen()
         {
+            GameManager.Instance.FinishedMatch(Int32.Parse(scoreNumber.Text));
             map.DOMoveX(map.position.x + 10, 2);
             endingScreen.DOMoveX(0, 2);
             AudioManager.Instance.PlayTransitionWhoosh();

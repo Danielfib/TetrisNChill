@@ -7,9 +7,24 @@ namespace Tetris.Managers
 {
     public class MainScreenManager : Singleton<MainScreenManager>
     {
-        [SerializeField]
-        Transform[] vanishToLeft, vanishToRight;
+        [SerializeField] Transform[] vanishToLeft, vanishToRight;
         [SerializeField] float vanishDuration;
+        
+        [SerializeField] Transform highScoreHolder;
+        [SerializeField] SimpleHelvetica highScoreText;
+
+        private void Start()
+        {
+            int storedHighscore = PlayerPrefs.GetInt("Highscore");
+            if (storedHighscore > 0)
+            {
+                highScoreText.Text = storedHighscore.ToString();
+                highScoreText.GenerateText();
+            } else
+            {
+                highScoreHolder.gameObject.SetActive(false);
+            }
+        }
 
         public void StartMatch() 
         {

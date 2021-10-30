@@ -24,6 +24,15 @@ namespace Tetris.Managers
 #endif
         }
 
+        public void FinishedMatch(int score)
+        {
+            int currentHighscore = PlayerPrefs.GetInt("Highscore");
+            if(score > currentHighscore)
+            {
+                PlayerPrefs.SetInt("Highscore", score);
+            }
+        }
+
         public float GetStandardFallTime() { return settings.StandardFallTime; }
         public float GetAcceleratedFallTime() { return settings.AcceleratedFallTime; }
 
