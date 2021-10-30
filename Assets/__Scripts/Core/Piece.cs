@@ -64,7 +64,7 @@ public class Piece : MonoBehaviour
 
     void Fall()
     {
-        if (IsFutureChildrenPositionValid(Vector3.down))
+        if (IsFutureChildrenPositionValid(0, -1))
             transform.position += Vector3.down;
         else
             FinishFalling();
@@ -108,31 +108,27 @@ public class Piece : MonoBehaviour
 
     public void Rotate()
     {
-        //TODO
-        //transform.eulerAngles += Vector3.forward * 90;
-        //StartCoroutine(WaitForPhysicsCoroutine(() =>
-        //{
-        //    if (!IsPositionValid()) transform.eulerAngles -= Vector3.forward * 90;
-        //}));
+        transform.eulerAngles += Vector3.forward * 90;
+        if (!IsFutureChildrenPositionValid())
+        {
+            transform.eulerAngles -= Vector3.forward * 90;
+        }
     }
 
     public void TryMoveInDirection(Vector3 dir)
     {
-        if (IsFutureChildrenPositionValid(dir))
+        if (IsFutureChildrenPositionValid(dir.x, dir.y))
         {
             transform.position += dir;
-        } else
-        {
-            print("oxente");
-        }
+        } 
     }
 
-    private bool IsFutureChildrenPositionValid(Vector3 moveDir)
+    private bool IsFutureChildrenPositionValid(float xOffset = 0, float yOffset = 0)
     {
         Transform[] children = transform.GetChildren();
         foreach(var c in children)
         {
-            bool isPositionOccupied = GridManager.Instance.CheckPosition(c.position.x + moveDir.x, c.position.y + moveDir.y);
+            bool isPositionOccupied = GridManager.Instance.CheckPosition(c.position.x + xOffset, c.position.y + yOffset);
             if (isPositionOccupied) return false;
         }
         return true;
