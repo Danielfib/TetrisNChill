@@ -38,8 +38,6 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
         foreach (var c in children)
         {
             c.parent = blocksParent;
-            float y = (float)Math.Round(c.position.y, 2);
-            c.position = new Vector3(c.position.x, y, c.position.z);
         }
     }
 
@@ -49,7 +47,8 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
         List<float> differentHeights = new List<float>();
         foreach (var c in children)
         {
-            if (!differentHeights.Contains(c.position.y)) differentHeights.Add(c.position.y);
+            float roundedLineY = c.position.y.Round(0.5f);
+            if (!differentHeights.Contains(roundedLineY)) differentHeights.Add(roundedLineY);
         }
         return differentHeights;
     }
@@ -82,7 +81,7 @@ public class LineBreakChecker : Singleton<LineBreakChecker>
     {
         var childrenInLine = transform.GetChildren().Where(t => t.position.y.Difference(lineY) < TOLERANCE);
         //print("children in: " + lineY + "-----" + childrenInLine.Count());
-        if(childrenInLine.Count() >= 10)
+        if (childrenInLine.Count() >= 10)
         {
             foreach (var child in childrenInLine) Destroy(child.gameObject);
 
