@@ -8,10 +8,11 @@ namespace Tetris.Managers
         [SerializeField] AudioSource soundtrackSrc, sfxSource;
         [SerializeField] AudioClip soundTrack;
         [SerializeField] AudioClip[] chordsProg;
-        [SerializeField] AudioClip pieceFinishedFalling, transitionWhoosh;
+        [SerializeField] AudioClip pieceFinishedFalling, transitionWhoosh, btnHover;
 
         int currentChord;
 
+        #region PlayMethods
         public void PlayChordProg()
         {
             AudioClip chord = chordsProg[currentChord];
@@ -29,6 +30,12 @@ namespace Tetris.Managers
         {
             sfxSource.PlayOneShot(transitionWhoosh, 1.2f);
         }
+        
+        public void PlayBtnHover()
+        {
+            sfxSource.PlayOneShot(btnHover, 0.1f);
+        }
+        #endregion
 
         public void ResetChordProg()
         {

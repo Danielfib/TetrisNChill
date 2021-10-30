@@ -21,6 +21,7 @@ namespace Tetris.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             transform.DOScale(initScale * animationStrength, animationDuration);
+            AudioManager.Instance.PlayBtnHover();
         }
 
         public void OnPointerExit(PointerEventData eventData)

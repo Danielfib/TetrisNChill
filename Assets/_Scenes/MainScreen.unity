@@ -14166,6 +14166,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 27231c7c4b84c234091df2e396850883, type: 3}
   pieceFinishedFalling: {fileID: 8300000, guid: 727a17e8687118b42ba7e9d258d48a0d, type: 3}
   transitionWhoosh: {fileID: 8300000, guid: f9bc0078ade7a6d42bcda41781b8881f, type: 3}
+  btnHover: {fileID: 8300000, guid: a78a96abe6a212841ae6ca8a6f4d5040, type: 3}
 --- !u!4 &1708146157
 Transform:
   m_ObjectHideFlags: 0
