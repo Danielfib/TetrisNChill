@@ -41,6 +41,7 @@ namespace Tetris.Core
 
         void PlacePreview()
         {
+            if (preview == null) return;
             float closerDistToCollide = CalculateCollisionDistance();
             preview.transform.position = transform.position + Vector3.down * closerDistToCollide;
             preview.transform.eulerAngles = transform.eulerAngles;
