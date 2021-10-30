@@ -6,12 +6,13 @@ namespace Tetris.Core
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] PieceFactory factory;
+        [SerializeField] Transform heldPieceHolder;
 
-        Piece fallingPiece;
+        Piece fallingPiece, heldPiece;
 
         Vector3 currentMoveDir;
         float lastMoveTime, moveInterval = 0.16f;
-        bool isMoving;
+        bool isMoving, isAbleToHold = true;
 
         public void StartPlaying()
         {
@@ -27,6 +28,7 @@ namespace Tetris.Core
 
         public void PieceFinishedFalling()
         {
+            isAbleToHold = true;
             SpawnNewPiece();
         }
 
@@ -62,6 +64,20 @@ namespace Tetris.Core
         void StopMoving()
         {
             isMoving = false;
+        }
+
+        void HoldPiece(Piece piece)
+        {
+            piece.transform.parent = heldPieceHolder;
+            piece.transform.localPosition = Vector3.zero;
+            piece.enabled = false;
+        }
+
+        void SpawnHeldPiece()
+        {
+            heldPiece.transform.position = factory.transform.position;
+            heldPiece.enabled = true;
+            heldPiece.ReturnToGame();
         }
 
         #region InputAction Messages
@@ -101,6 +117,26 @@ namespace Tetris.Core
         public void OnSkipFall()
         {
             fallingPiece?.SkipFall();
+        }
+
+        public void OnHoldPiece()
+        {
+            if (!isAbleToHold) return;
+
+            isAbleToHold = false;
+            if(heldPiece == null)
+            {
+                heldPiece = fallingPiece;
+                HoldPiece(heldPiece);
+                SpawnNewPiece();
+            } else
+            {
+                SpawnHeldPiece();
+                HoldPiece(fallingPiece);
+                Piece aux = fallingPiece;
+                fallingPiece = heldPiece;
+                heldPiece = aux;
+            }
         }
         #endregion
     }

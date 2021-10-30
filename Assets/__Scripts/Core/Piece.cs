@@ -150,6 +150,22 @@ namespace Tetris.Core
         public void OnDestroy()
         {
             Destroy(preview);
+            preview = null;
+        }
+
+        public void OnDisable()
+        {
+            Destroy(preview);
+            preview = null;
+        }
+
+        public void ReturnToGame()
+        {
+            if (preview == null)
+            {
+                currentFallTime = GameManager.Instance.GetStandardFallTime();
+                InstantiatePreview();
+            }
         }
     }
 }
