@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         {
             if(Time.time > lastMoveTime + moveInterval)
             {
-                fallingPiece?.MoveInDirection(currentMoveDir);
+                fallingPiece?.TryMoveInDirection(currentMoveDir);
                 lastMoveTime = Time.time;
             }
         }
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     void StartMoving(Vector3 dir)
     {
-        fallingPiece?.MoveInDirection(dir);
+        fallingPiece?.TryMoveInDirection(dir);
         lastMoveTime = Time.time;
         isMoving = true;
         currentMoveDir = dir;

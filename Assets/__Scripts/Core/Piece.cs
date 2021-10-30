@@ -12,8 +12,6 @@ public class Piece : MonoBehaviour
     private float currentFallTime;
     private float timeCounter;
 
-    int currentCollisions;
-    WaitForFixedUpdate updateWait;
     Action finishedFalling;
 
     GameObject preview;
@@ -22,7 +20,6 @@ public class Piece : MonoBehaviour
     private void Start()
     {
         timeCounter = Time.time;
-        updateWait = new WaitForFixedUpdate();
         currentFallTime = GameManager.Instance.GetStandardFallTime();
         gameObject.SetSelfAndChildrenLayer(LayerMask.NameToLayer("FallingPiece"));
         InstantiatePreview();
@@ -67,15 +64,10 @@ public class Piece : MonoBehaviour
 
     void Fall()
     {
-        transform.position += Vector3.down;
-        StartCoroutine(WaitForPhysicsCoroutine(() =>
-        {
-            if (!IsPositionValid())
-            {
-                transform.position -= Vector3.down;
-                FinishFalling();
-            }
-        }));
+        if (IsFutureChildrenPositionValid(Vector3.down))
+            transform.position += Vector3.down;
+        else
+            FinishFalling();
     }
 
     public void SkipFall()
@@ -110,41 +102,40 @@ public class Piece : MonoBehaviour
             }
         }
 
-        closerDistToCollide -= 0.75f;
+        closerDistToCollide -= 0.5f;
         return closerDistToCollide;
     }
 
     public void Rotate()
     {
-        transform.eulerAngles += Vector3.forward * 90;
-        StartCoroutine(WaitForPhysicsCoroutine(() =>
+        //TODO
+        //transform.eulerAngles += Vector3.forward * 90;
+        //StartCoroutine(WaitForPhysicsCoroutine(() =>
+        //{
+        //    if (!IsPositionValid()) transform.eulerAngles -= Vector3.forward * 90;
+        //}));
+    }
+
+    public void TryMoveInDirection(Vector3 dir)
+    {
+        if (IsFutureChildrenPositionValid(dir))
         {
-            if (!IsPositionValid()) transform.eulerAngles -= Vector3.forward * 90;
-        }));
-    }
-
-    public void MoveInDirection(Vector3 dir)
-    {
-        transform.position += dir;
-        StartCoroutine(WaitForPhysicsCoroutine(() =>
+            transform.position += dir;
+        } else
         {
-            if (!IsPositionValid()) transform.position -= dir;
-        }));
+            print("oxente");
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private bool IsFutureChildrenPositionValid(Vector3 moveDir)
     {
-        currentCollisions++;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        currentCollisions = Mathf.Max(0, currentCollisions - 1);
-    }
-
-    private bool IsPositionValid()
-    {
-        return currentCollisions == 0;
+        Transform[] children = transform.GetChildren();
+        foreach(var c in children)
+        {
+            bool isPositionOccupied = GridManager.Instance.CheckPosition(c.position.x + moveDir.x, c.position.y + moveDir.y);
+            if (isPositionOccupied) return false;
+        }
+        return true;
     }
 
     private void FinishFalling()
@@ -158,12 +149,6 @@ public class Piece : MonoBehaviour
     public void AddFinishedFallingListener(Action callback)
     {
         finishedFalling += callback;
-    }
-
-    private IEnumerator WaitForPhysicsCoroutine(Action doThat)
-    {
-        yield return updateWait;
-        doThat.Invoke();
     }
 
     public void OnDestroy()
