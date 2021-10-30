@@ -1,106 +1,107 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+namespace Tetris.Core
 {
-    [SerializeField] PieceFactory factory;
-
-    Piece fallingPiece;
-
-    Vector3 currentMoveDir;
-    float lastMoveTime, moveInterval = 0.16f;
-    bool isMoving;
-
-    public void StartPlaying()
+    public class PlayerController : MonoBehaviour
     {
-        SpawnNewPiece();
-    }
+        [SerializeField] PieceFactory factory;
 
-    public void SpawnNewPiece()
-    {
-        Piece newPiece = factory.Spawn().GetComponent<Piece>();
-        newPiece.AddFinishedFallingListener(PieceFinishedFalling);
-        fallingPiece = newPiece;
-    }
+        Piece fallingPiece;
 
-    public void PieceFinishedFalling()
-    {
-        SpawnNewPiece();
-    }
+        Vector3 currentMoveDir;
+        float lastMoveTime, moveInterval = 0.16f;
+        bool isMoving;
 
-    public void StopPlaying()
-    {
-        if(fallingPiece != null)
+        public void StartPlaying()
         {
-            Destroy(fallingPiece.gameObject);
-            fallingPiece = null;
+            SpawnNewPiece();
         }
-    }
 
-    private void Update()
-    {
-        if (isMoving)
+        public void SpawnNewPiece()
         {
-            if(Time.time > lastMoveTime + moveInterval)
+            Piece newPiece = factory.Spawn().GetComponent<Piece>();
+            newPiece.AddFinishedFallingListener(PieceFinishedFalling);
+            fallingPiece = newPiece;
+        }
+
+        public void PieceFinishedFalling()
+        {
+            SpawnNewPiece();
+        }
+
+        public void StopPlaying()
+        {
+            if(fallingPiece != null)
             {
-                fallingPiece?.TryMoveInDirection(currentMoveDir);
-                lastMoveTime = Time.time;
+                Destroy(fallingPiece.gameObject);
+                fallingPiece = null;
             }
         }
-    }
 
-    void StartMoving(Vector3 dir)
-    {
-        fallingPiece?.TryMoveInDirection(dir);
-        lastMoveTime = Time.time;
-        isMoving = true;
-        currentMoveDir = dir;
-    }
-
-    void StopMoving()
-    {
-        isMoving = false;
-    }
-
-    #region InputAction Messages
-    public void OnMoveLeft(InputValue value)
-    {
-        if (value.isPressed)
+        private void Update()
         {
-            StartMoving(Vector3.left);
-        } else
-        {
-            StopMoving();
+            if (isMoving)
+            {
+                if(Time.time > lastMoveTime + moveInterval)
+                {
+                    fallingPiece?.TryMoveInDirection(currentMoveDir);
+                    lastMoveTime = Time.time;
+                }
+            }
         }
-    }
 
-    public void OnMoveRight(InputValue value)
-    {
-        if (value.isPressed)
+        void StartMoving(Vector3 dir)
         {
-            StartMoving(Vector3.right);
+            fallingPiece?.TryMoveInDirection(dir);
+            lastMoveTime = Time.time;
+            isMoving = true;
+            currentMoveDir = dir;
         }
-        else
+
+        void StopMoving()
         {
-            StopMoving();
+            isMoving = false;
         }
-    }
 
-    public void OnRotate()
-    {
-        fallingPiece?.Rotate();
-    }
+        #region InputAction Messages
+        public void OnMoveLeft(InputValue value)
+        {
+            if (value.isPressed)
+            {
+                StartMoving(Vector3.left);
+            } else
+            {
+                StopMoving();
+            }
+        }
 
-    public void OnAccelerate(InputValue value)
-    {
-        fallingPiece?.SetAcceleration(value.isPressed);
-    }
+        public void OnMoveRight(InputValue value)
+        {
+            if (value.isPressed)
+            {
+                StartMoving(Vector3.right);
+            }
+            else
+            {
+                StopMoving();
+            }
+        }
 
-    public void OnSkipFall()
-    {
-        fallingPiece?.SkipFall();
+        public void OnRotate()
+        {
+            fallingPiece?.Rotate();
+        }
+
+        public void OnAccelerate(InputValue value)
+        {
+            fallingPiece?.SetAcceleration(value.isPressed);
+        }
+
+        public void OnSkipFall()
+        {
+            fallingPiece?.SkipFall();
+        }
+        #endregion
     }
-    #endregion
 }

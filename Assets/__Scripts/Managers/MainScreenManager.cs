@@ -1,6 +1,5 @@
 using UnityEngine;
 using Tetris.Utils;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 namespace Tetris.Managers

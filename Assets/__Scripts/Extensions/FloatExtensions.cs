@@ -1,30 +1,33 @@
 using UnityEngine;
 
-public static class FloatExtensions
+namespace Tetris.Extensions
 {
-    public static float Difference(this float a, float b)
+    public static class FloatExtensions
     {
-        return Mathf.Abs(a - b);
-    }
-
-    public static float Round(this float f, float roundFactor)
-    {
-        bool isNegative = f < 0;
-        f = Mathf.Abs(f);
-        bool roundUp = f % roundFactor >= roundFactor / 2;
-
-        float result;
-        if (roundUp)
+        public static float Difference(this float a, float b)
         {
-            result = (f - f % roundFactor) + roundFactor;
-        }
-        else
-        {
-            result = f - f % roundFactor;
+            return Mathf.Abs(a - b);
         }
 
-        if (isNegative) result *= -1;
+        public static float Round(this float f, float roundFactor)
+        {
+            bool isNegative = f < 0;
+            f = Mathf.Abs(f);
+            bool roundUp = f % roundFactor >= roundFactor / 2;
 
-        return result;
+            float result;
+            if (roundUp)
+            {
+                result = (f - f % roundFactor) + roundFactor;
+            }
+            else
+            {
+                result = f - f % roundFactor;
+            }
+
+            if (isNegative) result *= -1;
+
+            return result;
+        }
     }
 }

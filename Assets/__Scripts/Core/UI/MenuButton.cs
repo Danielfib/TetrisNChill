@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using Tetris.Managers;
 using UnityEngine.Events;
 
-namespace Tetris.UI
+namespace Tetris.Core.UI
 {
     public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {

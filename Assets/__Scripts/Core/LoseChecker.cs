@@ -1,11 +1,14 @@
 using UnityEngine;
 using Tetris.Managers;
 
-public class LoseChecker : MonoBehaviour
+namespace Tetris.Core
 {
-    private void OnTriggerEnter(Collider other)
+    public class LoseChecker : MonoBehaviour
     {
-        FindObjectOfType<PlayerController>().StopPlaying();
-        MatchHUDManager.Instance.ShowEndScreen();
+        private void OnTriggerEnter(Collider other)
+        {
+            FindObjectOfType<PlayerController>().StopPlaying();
+            MatchHUDManager.Instance.ShowEndScreen();
+        }
     }
 }
