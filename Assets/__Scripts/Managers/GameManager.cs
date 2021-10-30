@@ -52,7 +52,7 @@ namespace Tetris.Managers
     [Serializable]
     class GameSettings
     {
-        public float StandardFallTime = 1;
+        public float StandardFallTime = 0.8f;
         public float AcceleratedFallTime = 0.1f;
     }
 }

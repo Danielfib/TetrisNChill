@@ -112,8 +112,43 @@ namespace Tetris.Core
             transform.eulerAngles += Vector3.forward * 90;
             if (!IsFutureChildrenPositionValid())
             {
-                transform.eulerAngles -= Vector3.forward * 90;
+                TryToFindValidRot();
             }
+        }
+
+        void TryToFindValidRot()
+        {
+            var validOffset = TryToFindValidPositionWithinDist(1);
+            if (validOffset == Vector3.zero)
+            {
+                var validOffestWithDouble = TryToFindValidPositionWithinDist(2);
+                if (validOffestWithDouble == Vector3.zero)
+                {
+                    //did not find available rot, undo
+                    transform.eulerAngles -= Vector3.forward * 90;
+                }
+                else
+                {
+                    transform.position += validOffestWithDouble;
+                }
+            }
+            else
+            {
+                transform.position += validOffset;
+            }
+        }
+
+        Vector3 TryToFindValidPositionWithinDist(int dist)
+        {
+            bool isAvailableToTheLeft = IsFutureChildrenPositionValid(-dist, 0);
+            bool isAvailableToTheRight = IsFutureChildrenPositionValid(dist, 0);
+
+            if (isAvailableToTheLeft)
+                return Vector3.left * dist;
+            else if (isAvailableToTheRight)
+                return Vector3.right * dist;
+            else
+                return Vector3.zero;
         }
 
         public void TryMoveInDirection(Vector3 dir)
