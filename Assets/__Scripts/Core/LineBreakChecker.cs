@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Tetris.Utils;
 using Tetris.Extensions;
-using Tetris.Managers;
 
 namespace Tetris.Managers
 {
@@ -12,20 +11,21 @@ namespace Tetris.Managers
     {
         [SerializeField] Transform blocksParent;
 
-        private const float TOLERANCE = 0.1f;
+        private const float TOLERANCE = 0.1f, MAX_BLOCKS_PER_ROW = 10;
 
         public void CheckFallenPiece(Transform piece)
         {
-            StartCoroutine(CheckFallenPieceCoroutine(piece));
+            StartCoroutine(HandleFallenPieceCoroutine(piece));
         }
 
-        private IEnumerator CheckFallenPieceCoroutine(Transform piece)
+        private IEnumerator HandleFallenPieceCoroutine(Transform piece)
         {
             yield return new WaitForFixedUpdate();
 
             var heightsToCheck = GetChildrenDifferentHeights(piece);
             ReleaseBlocks(piece);
             var linesDestroyed = DestroyFullLines(heightsToCheck);
+            AudioManager.Instance.PieceFell(linesDestroyed.Count);
 
             yield return new WaitForFixedUpdate();
 
@@ -63,8 +63,6 @@ namespace Tetris.Managers
                 if (didDestroyLine) linesDestroyed.Add(y);
             }
 
-            AudioManager.Instance.PieceFell(linesDestroyed.Count);
-
             return linesDestroyed;
         }
 
@@ -74,17 +72,16 @@ namespace Tetris.Managers
             {
                 lines.Sort();
                 lines.Reverse();
-                foreach (var l in lines) LowerBlocksAbove(l);
+                foreach (var line in lines) LowerBlocksAbove(line);
             }
         }
 
-        public bool CheckLine(float lineY)
+        private bool CheckLine(float lineY)
         {
-            var childrenInLine = transform.GetChildren().Where(t => t.position.y.Difference(lineY) < TOLERANCE);
-            //print("children in: " + lineY + "-----" + childrenInLine.Count());
-            if (childrenInLine.Count() >= 10)
+            var blocksInLine = transform.GetChildren().Where(t => t.position.y.Difference(lineY) < TOLERANCE);
+            if (blocksInLine.Count() >= MAX_BLOCKS_PER_ROW)
             {
-                foreach (var child in childrenInLine) Destroy(child.gameObject);
+                DestroyBlocksInLine(blocksInLine);
 
                 MatchHUDManager.Instance.Score();
                 return true;
@@ -92,10 +89,15 @@ namespace Tetris.Managers
             return false;
         }
 
-        public void LowerBlocksAbove(float y)
+        private void DestroyBlocksInLine(IEnumerable<Transform> blocksInLine)
         {
-            var childrenAboveLine = transform.GetComponentsInChildren<Transform>().Where(t => t.position.y > y + TOLERANCE);
-            foreach (var child in childrenAboveLine) child.position -= Vector3.up;
+            foreach (var block in blocksInLine) Destroy(block.gameObject);
+        }
+
+        private void LowerBlocksAbove(float lineY)
+        {
+            var childrenAboveLine = transform.GetComponentsInChildren<Transform>().Where(t => t.position.y > lineY + TOLERANCE);
+            foreach (var child in childrenAboveLine) child.position += Vector3.down;
         }
     }
 }

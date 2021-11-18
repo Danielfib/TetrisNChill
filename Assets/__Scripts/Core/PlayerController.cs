@@ -84,24 +84,17 @@ namespace Tetris.Core
         public void OnMoveLeft(InputValue value)
         {
             if (value.isPressed)
-            {
                 StartMoving(Vector3.left);
-            } else
-            {
+            else
                 StopMoving();
-            }
         }
 
         public void OnMoveRight(InputValue value)
         {
             if (value.isPressed)
-            {
                 StartMoving(Vector3.right);
-            }
             else
-            {
                 StopMoving();
-            }
         }
 
         public void OnRotate()

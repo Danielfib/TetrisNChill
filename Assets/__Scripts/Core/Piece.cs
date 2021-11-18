@@ -65,7 +65,7 @@ namespace Tetris.Core
 
         void Fall()
         {
-            if (IsFutureChildrenPositionValid(0, -1))
+            if (IsFuturePositionValid(0, -1))
                 transform.position += Vector3.down;
             else
                 FinishFalling();
@@ -110,7 +110,7 @@ namespace Tetris.Core
         public void Rotate()
         {
             transform.eulerAngles += Vector3.forward * 90;
-            if (!IsFutureChildrenPositionValid())
+            if (!IsFuturePositionValid())
             {
                 TryToFindValidRot();
             }
@@ -140,8 +140,8 @@ namespace Tetris.Core
 
         Vector3 TryToFindValidPositionWithinDist(int dist)
         {
-            bool isAvailableToTheLeft = IsFutureChildrenPositionValid(-dist, 0);
-            bool isAvailableToTheRight = IsFutureChildrenPositionValid(dist, 0);
+            bool isAvailableToTheLeft = IsFuturePositionValid(-dist, 0);
+            bool isAvailableToTheRight = IsFuturePositionValid(dist, 0);
 
             if (isAvailableToTheLeft)
                 return Vector3.left * dist;
@@ -153,18 +153,18 @@ namespace Tetris.Core
 
         public void TryMoveInDirection(Vector3 dir)
         {
-            if (IsFutureChildrenPositionValid(dir.x, dir.y))
+            if (IsFuturePositionValid(dir.x, dir.y))
             {
                 transform.position += dir;
             } 
         }
 
-        private bool IsFutureChildrenPositionValid(float xOffset = 0, float yOffset = 0)
+        private bool IsFuturePositionValid(float xOffset = 0, float yOffset = 0)
         {
-            Transform[] children = transform.GetChildren();
-            foreach(var c in children)
+            Transform[] childrenBlocks = transform.GetChildren();
+            foreach(var block in childrenBlocks)
             {
-                bool isPositionOccupied = GridManager.Instance.CheckPosition(c.position.x + xOffset, c.position.y + yOffset);
+                bool isPositionOccupied = GridManager.Instance.CheckPosition(block.position.x + xOffset, block.position.y + yOffset);
                 if (isPositionOccupied) return false;
             }
             return true;
@@ -180,6 +180,7 @@ namespace Tetris.Core
 
         public void AddFinishedFallingListener(Action callback)
         {
+            finishedFalling -= callback;
             finishedFalling += callback;
         }
 
