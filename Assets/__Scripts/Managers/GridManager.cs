@@ -12,7 +12,7 @@ namespace Tetris.Managers
         {
             bool isPosOccupied = false;
             Vector3 checkPosition = map.position + new Vector3(x, y + 0.5f, 0);
-            Vector3 rayOrigin = checkPosition + Vector3.back * 10;
+            Vector3 rayOrigin = checkPosition + map.forward * -10;
             if(Physics.Raycast(rayOrigin, checkPosition - rayOrigin, Mathf.Infinity, obstacleLayer))
             {
                 isPosOccupied = true;
